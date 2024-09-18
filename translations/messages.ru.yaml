@@ -4,7 +4,7 @@ My Profile: Мой профиль
 Change password: Поменять пароль
 Sign Out: Выйти из системы
 Main: Главная
-Souvenirs: Сувениры
+Souvenirs: Cклад
 Persons: Персоны
 Preferences: Предпочтения
 Export: Экспорт
@@ -157,7 +157,7 @@ personFrom:	Кто подарил
 PersonFrom:	Кто подарил
 ReceivedAt:	Дата дарения
 Description:	Описание
-Give or Receive gift: Подарить или получить сувенир
+Give or Receive gift: Добавить запись в архив
 Export exact person: Выгрузка в docx файл
 Search: Поиск
 Receiver and Giver must not be same person: Даритель и получатель не должны совпадать
