@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block title %}{% trans %}Подарить/Получить сувенир{% endtrans %}{% endblock title %}
+{% block pagetitle %}{% trans %}Подарить/Получить сувенир{% endtrans %}{% endblock pagetitle %}
+
+{% block body %}
+
+    {{ include('export/_form.html.twig', {'button_label': 'Подарить'}) }}
+
+{% endblock %}

@@ -1,0 +1,88 @@
+{{ form_start(form) }}
+{{ form_errors(form) }}
+
+<div class="row">
+<div class="col-md-4">
+<div class="p-3">
+  <h5>Характеристики сувенира</h5>
+
+    {{ form_row(form.title) }}
+    {{ form_row(form.size) }}
+    {{ form_row(form.price) }}
+    {{ form_row(form.originCountry) }}
+    {{ form_row(form.material) }}
+    {{ form_row(form.author) }}
+    {{ form_row(form.summary) }}
+<br>
+  <h5>Наличие</h5>
+    {{ form_row(form.counter) }}
+    {{ form_row(form.daysToDelivery) }}
+    {{ form_row(form.isAvailable) }}
+    {{ form_row(form.isActive) }}
+
+
+    <button class="btn btn-primary">{{ button_label|default('Save')|trans }}</button>
+
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="p-3">
+  <h5>Данные для системы подбора</h5>
+    {{ form_row(form.gender) }}
+    {{ form_row(form.category) }}
+    {{ form_row(form.generation) }}
+    {{ form_row(form.preferences) }}
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="p-3">
+      {# Start photos #}
+    {{ form_label(form.photos) }}
+    <div class="photos mb-3"
+        data-index="{{ form.photos|length > 0 ? form.photos|last.vars.name + 1 : 0 }}"
+        data-prototype="{{ form_widget(form.photos.vars.prototype)|e('html_attr') }}"
+    >
+    {% for attachment in form.photos %}
+                <div>{{ form_row(attachment) }}</div>
+    {% endfor %}
+    </div>
+
+     <button type="button" class="btn btn-secondary add_item_link mb-5" data-collection-holder-class="photos">{% trans %}Attach file{% endtrans %}</button>
+
+    {# End photos #}
+</div>
+</div>
+</div>
+{{ form_end(form) }}
+
+
+
+
+
+
+<script>
+const addFormToCollection = (e) => {
+  const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+
+  const item = document.createElement('div');
+  item.classList.add('mb-3');
+  item.innerHTML = collectionHolder
+    .dataset
+    .prototype
+    .replace(
+      /__name__/g,
+      collectionHolder.dataset.index
+    );
+
+  collectionHolder.appendChild(item);
+
+  collectionHolder.dataset.index++;
+};
+
+document.querySelectorAll('.add_item_link').forEach(btn => {
+      btn.addEventListener("click", addFormToCollection)
+});
+
+  </script>

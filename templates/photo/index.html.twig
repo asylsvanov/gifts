@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Photo index{% endblock %}
+
+{% block body %}
+    <h1>Photo index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ImageName</th>
+                <th>ImageSize</th>
+                <th>Mimetype</th>
+                <th>Path</th>
+                <th>{% trans %}CreatedBy{% endtrans %}</th>
+                <th>{% trans %}UpdatedBy{% endtrans %}</th>
+                <th>{% trans %}CreatedAt{% endtrans %}</th>
+                <th>{% trans %}UpdatedAt{% endtrans %}</th>
+                <th>{% trans %}DeletedAt{% endtrans %}</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for photo in photos %}
+            <tr>
+                <td>{{ photo.imageName }}</td>
+                <td>{{ photo.imageSize }}</td>
+                <td>{{ photo.mimetype }}</td>
+                <td>{{ photo.path }}</td>
+                <td>{{ photo.createdBy }}</td>
+                <td>{{ photo.updatedBy }}</td>
+                <td>{{ photo.createdAt ? photo.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ photo.updatedAt ? photo.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ photo.deletedAt ? photo.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_photo_show', {'id': photo.id}) }}">{% trans %}show{% endtrans %}</a>
+                    <a href="{{ path('app_photo_edit', {'id': photo.id}) }}">{% trans %}edit{% endtrans %}</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="11">{% trans %}no records found{% endtrans %}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_photo_new') }}">{% trans %}Create new{% endtrans %}</a>
+{% endblock %}

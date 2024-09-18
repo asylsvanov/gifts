@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}Edit Preference{% endtrans %}{% endblock %}
+{% block pagetitle %}{% trans %}Edit Preference{% endtrans %}{% endblock pagetitle %}
+
+{% block body %}
+
+    {{ include('preference/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_preference_index') }}" class="btn btn-secondary mb-3 mt-3">{% trans %}back to list{% endtrans %}</a>
+
+    {{ include('preference/_delete_form.html.twig') }}
+{% endblock %}

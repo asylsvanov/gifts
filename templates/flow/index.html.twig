@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}Archive {% endtrans %}{% endblock %}
+{% block pagetitle %}{% trans %}Archive {% endtrans %}{% endblock %}
+
+{% block body %}
+
+{{ form_start(form) }}
+	<div class="mb-4" id="myfilter" style="display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    column-gap: 10px;">
+	
+        {{ form_row(form.personFrom) }}
+        {{ form_row(form.personTo) }}
+        {{ form_row(form.gift) }}
+        {{ form_row(form.country) }}
+        <div class="mb-3">
+		<button class="btn btn-primary" type="submit" name="actionName" value="filter" >Фильтровать</button>
+		</div>
+		<div class="mb-3">
+		<button class="btn btn-primary" type="submit" name="actionName" value="export" >Экспортировать </button>
+		</div>
+	</div>
+
+    {{ form_end(form) }}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans %}ReceivedAt{% endtrans %}</th>
+                <th>{% trans %}PersonFrom{% endtrans %}</th>
+                <th>{% trans %}PersonTo{% endtrans %}</th>
+                <th>{% trans %}Gift{% endtrans %}</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for flow in flows %}
+            
+            <tr>
+                <td>{{ flow.receivedAt ? flow.receivedAt|date('d.m.Y') : '' }}</td>
+
+                <td>
+                {% if flow.personFrom != null %}
+                    <a href="{{ path('app_person_show', {'id': flow.personFrom.id}) }}" class="">{{ flow.personFrom }}</a>
+                {% else %}
+                    {{ flow.importPersonFromCountry }}
+                {% endif %}
+                </td>
+                
+                <td>
+                {% if flow.personTo != null %}
+                    <a href="{{ path('app_person_show', {'id': flow.personTo.id}) }}" class="">{{ flow.personTo }}</a>
+                {% else %}
+                    {{ flow.importPersonTo }}, {{ flow.importPersonToCountry }}, {{flow.importPersonToCategory|trans}}
+                {% endif %}
+                </td>
+
+                <td><a href="{{ path('app_gift_show', {'id': flow.gift.id}) }}" class="">{{ flow.gift }}</a></td>
+
+<td>
+                
+                {% if flow.gift.photos|first is not empty %}
+					{% if flow.gift.photos|first and flow.gift.photos|first.imageName is not empty %}
+						<a href="{{ path('app_gift_show', {'id': flow.gift.id}) }}">
+							<img src="{{ asset('/photos/' ~ flow.gift.photos|first.imageName) }}" style="max-height:100px;max-width:100px;margin: 0 auto;display: block;" alt="{{ flow.gift }}">
+						</a>
+					{% endif %}
+				{% endif %}
+
+                </td>
+
+                
+                <td>
+                    <a href="{{ path('app_flow_show', {'id': flow.id}) }}" class="btn btn-secondary mb-2 btn-sm">{% trans %}show{% endtrans %}</a><br>
+                    <a href="{{ path('app_flow_edit', {'id': flow.id}) }}" class="btn btn-secondary mb-2 btn-sm">{% trans %}edit{% endtrans %}</a>
+                </td>
+            </tr>
+
+        {% else %}
+            <tr>
+                <td colspan="7">{% trans %}no records found{% endtrans %}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

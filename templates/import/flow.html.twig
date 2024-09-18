@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}Archive {% endtrans %}{% endblock %}
+{% block pagetitle %}{% trans %}Archive {% endtrans %}{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans %}PersonFrom{% endtrans %}</th>
+                <th>{% trans %}Gift{% endtrans %}</th>
+                <th>{% trans %}PersonTo{% endtrans %}</th>
+                <th>{% trans %}ReceivedAt{% endtrans %}</th>
+                <th>{% trans %}Description{% endtrans %}</th>
+                <th>{% trans %}importPersonFromCountry{% endtrans %}</th>
+                <th>{% trans %}importPersonToCountry{% endtrans %}</th>
+                <th>{% trans %}importPersonTo{% endtrans %}</th>
+                <th>{% trans %}importPersonFrom{% endtrans %}</th>
+                <th>{% trans %}importPersonToCategory{% endtrans %}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for flow in flows %}
+            
+            <tr>
+                <td>
+                    <a href="{{ path('app_person_show', {'id': flow.personFrom.id}) }}" class="">{{ flow.personFrom }}</a>
+                </td>
+
+                <td><a href="{{ path('app_gift_show', {'id': flow.gift.id}) }}" class="">{{ flow.gift }}</a></td>
+                
+                <td>
+                {% if flow.personTo != null %}
+                    <a href="{{ path('app_person_show', {'id': flow.personTo.id}) }}" class="">{{ flow.personTo }}</a>
+                {% else %}
+                {% endif %}
+                </td>
+                <td>{{ flow.receivedAt ? flow.receivedAt|date('d.m.Y') : '' }}</td>
+                <td>{{ flow.description }}</td>
+                <td>{% if flow.importPersonFromCountry != null %} {{ flow.importPersonFromCountry }}{% endif %}</td>
+                <td>{% if flow.importPersonToCountry != null %} {{ flow.importPersonToCountry }}{% endif %}</td>
+                <td>{% if flow.importPersonTo != null %} {{ flow.importPersonTo }}{% endif %}</td>
+                <td>{% if flow.importPersonFrom != null %} {{ flow.importPersonFrom }}{% endif %}</td>
+                <td>{% if flow.importPersonToCategory != null %} {{ flow.importPersonToCategory }}{% endif %}</td>
+
+                <td>
+                    <a href="{{ path('app_flow_show', {'id': flow.id}) }}" class="btn btn-secondary mb-2">{% trans %}show{% endtrans %}</a>
+                    <a href="{{ path('app_flow_edit', {'id': flow.id}) }}" class="btn btn-secondary mb-2">{% trans %}edit{% endtrans %}</a>
+                </td>
+            </tr>
+
+        {% else %}
+            <tr>
+                <td colspan="7">{% trans %}no records found{% endtrans %}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

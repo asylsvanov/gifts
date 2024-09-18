@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}Person index{% endtrans %}{% endblock %}
+{% block pagetitle %}{% trans %}Person index{% endtrans %} 
+<a href="{{ path('app_person_new') }}" class="btn btn-primary mb-3 mt-3">{% trans %}Create new{% endtrans %}</a>{% endblock pagetitle %}
+{% block body %}
+
+    {{ form_start(form) }}
+	<div class="mb-4" id="myfilter" style="display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    column-gap: 10px;">
+	
+        {{ form_row(form.name) }}
+        {{ form_row(form.sex) }}
+        {{ form_row(form.country) }}
+        {# {{ form_row(form.language) }}
+        {{ form_row(form.category) }} #}
+        {{ form_row(form.preferences) }}
+        <div class="mb-3">
+		<button class="btn btn-primary" type="submit" name="actionName" value="filter" >Фильтровать</button>
+		</div>
+	</div>
+
+    {{ form_end(form) }}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>{% trans %}Name{% endtrans %}</th>
+                <th>{% trans %}Country{% endtrans %}</th>
+                <th>{% trans %}BirthAt{% endtrans %}</th>
+                {# <th>{% trans %}Language{% endtrans %}</th> #}
+                <th>{% trans %}Category{% endtrans %}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for person in people %}
+            <tr>
+                <td>
+                    {% if person.attachments|first is not empty %}
+                    {% if person.attachments|first and person.attachments|first.imageName is not empty %}
+                    <img src="{{ asset('/attachments/'~person.attachments|first.imageName) }}" style="max-width: 150px" alt="{{ person.firstName }} {{ person.lastName }} {{ person.surname }}" >    
+                    {% endif %}
+					{% endif %}
+
+                </td>
+                <td>{{ person.prefix }} {{ person.lastName }} {{ person.firstName }} {{ person.surname }}</td>
+                <td>{{ person.country|trans }}</td>
+                <td>{{ person.birthAt ? person.birthAt|date('d.m.Y') : '' }}</td>
+                
+                {# <td>
+                {% if person.language %}
+                    {% for language in person.language %}
+                        {{language|trans}}{% if loop.last == false %}, {% endif %}
+                    {% endfor %}
+                {% endif %}
+                </td> #}
+
+                <td>
+                {% if person.category %}
+                    {% for category in person.category %}
+                        {{category|trans}}{% if loop.last == false %}, {% endif %}
+                    {% endfor %}
+                {% endif %}
+                </td>
+
+                <td>
+                    <a href="{{ path('app_person_show', {'id': person.id}) }}" class="btn btn-secondary mb-1 btn-sm">{% trans %}show{% endtrans %}</a>
+                    <a href="{{ path('app_person_edit', {'id': person.id}) }}" class="btn btn-secondary mb-1 btn-sm">{% trans %}edit{% endtrans %}</a>
+                    <a href="{{ path('app_export_match_person_by_id', {'id': person.id}) }}" class="btn btn-secondary mb-1  btn-sm">{% trans %}export{% endtrans %}</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="21">{% trans %}no records found{% endtrans %}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_person_new') }}" class="btn btn-primary mb-3 mt-3">{% trans %}Create new{% endtrans %}</a>
+{% endblock %}

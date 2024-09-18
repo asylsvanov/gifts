@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}New Gift{% endtrans %}{% endblock %}
+{% block pagetitle %}{% trans %}Create new Gift{% endtrans %}{% endblock pagetitle %}
+
+{% block body %}
+<div class="p-3">
+
+    {{ include('gift/_form.html.twig') }}
+
+    <a href="{{ path('app_gift_index') }}" class="btn btn-secondary mb-3 mt-3">{% trans %}back to list{% endtrans %}</a>
+    </div>
+{% endblock %}

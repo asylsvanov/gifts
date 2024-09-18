@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block title %}{% trans %}Выгрузка по конкретному лицу{% endtrans %}{% endblock title %}
+{% block pagetitle %}{% trans %}Выгрузка по конкретному лицу{% endtrans %}{% endblock pagetitle %}
+
+{% block body %}
+
+    {{ include('export/_form.html.twig', {'button_label': 'Выгрузить'}) }}
+
+{% endblock %}

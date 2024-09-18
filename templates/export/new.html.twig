@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}Поиск по предпочтениям{% endtrans %}{% endblock  %}
+{% block pagetitle %}{% trans %}Поиск по предпочтениям{% endtrans %}{% endblock pagetitle %}
+
+{% block body %}
+
+    <div class="col-md-4">
+
+    {{ form_start(form) }}
+        {{ form_row(form.gender) }}
+        {{ form_row(form.preference) }}
+        {{ form_row(form.category) }}
+        {{ form_row(form.generation) }}
+        {{ form_row(form.ignore_counter) }}
+        {{ form_row(form.include_person) }}
+        <div id="includePerson" style="display:none">
+            {{ form_row(form.person) }}
+        </div>
+        <button class="btn btn-primary" type="submit" name="actionName" >{{ button_label|default('Export')|trans }}</button>
+    {{ form_end(form) }}
+    
+    </div>
+
+    <style>
+    label.form-label {
+        font-weight:bold;
+    }
+    </style>
+
+
+    <script>
+const selectElement = document.getElementById('export_include_person');
+
+selectElement.addEventListener('change', (event) => {
+    if (event.target.checked ) {
+        document.getElementById("includePerson").style.display = "block";
+        console.log('yaych');
+    } else {
+        document.getElementById("includePerson").style.display = "none";
+    }
+});
+</script>
+
+{% endblock %}

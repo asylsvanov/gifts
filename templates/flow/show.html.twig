@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}Give or Receive gift{% endtrans %}{% endblock %}
+{% block pagetitle %}{% trans %}Give or Receive gift{% endtrans %}{% endblock %}
+
+{% block body %}
+
+<table class="table">
+    <tbody>
+        
+        <tr>
+            <th>{% trans %}personFrom{% endtrans %}</th>
+            <td>{{ flow.personFrom }}</td>
+        </tr>
+        <tr>
+            <th>{% trans %}gift{% endtrans %}</th>
+            <td>{{ flow.gift }}</td>
+        </tr>
+        <tr>
+            <th>{% trans %}personTo{% endtrans %}</th>
+            <td>{{ flow.personTo }}</td>
+        </tr>
+        <tr>
+            <th>{% trans %}ReceivedAt{% endtrans %}</th>
+            <td>{{ flow.receivedAt ? flow.receivedAt|date('Y-m-d') : '' }}</td>
+        </tr>
+        <tr>
+            <th>{% trans %}Description{% endtrans %}</th>
+            <td>{{ flow.description }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<a href="{{ path('app_flow_index') }}" class="btn btn-secondary mb-2">{% trans %}back to list{% endtrans %}</a>
+
+<a href="{{ path('app_flow_edit', {'id': flow.id}) }}" class="btn btn-secondary mb-2">{% trans %}edit{% endtrans %}</a>
+
+{{ include('flow/_delete_form.html.twig') }}
+{% endblock %}

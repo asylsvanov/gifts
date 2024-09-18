@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}Поиск по предпочтениям{% endtrans %}{% endblock  %}
+{% block pagetitle %}{% trans %}Поиск по предпочтениям{% endtrans %}{% endblock pagetitle %}
+
+{% block body %}
+
+    <div class="col-md-4">
+    {{ form_start(form) }}
+        {{ form_row(form.person) }}
+        <button class="btn btn-primary" type="submit" name="actionName" >{{ button_label|default('Export')|trans }}</button>
+    {{ form_end(form) }}
+    </div>
+
+    <style>
+    label.form-label {
+        font-weight:bold;
+    }
+    </style>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}Preference index{% endtrans %}{% endblock %}
+{% block pagetitle %}{% trans %}Preference index{% endtrans %}{% endblock pagetitle %}
+
+{% block body %}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans %}Title{% endtrans %}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for preference in preferences %}
+            <tr>
+                <td>{{ preference.title }}</td>
+                <td>
+                    <a href="{{ path('app_preference_edit', {'id': preference.id}) }}" class="btn btn-secondary">{% trans %}edit{% endtrans %}</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">{% trans %}no records found{% endtrans %}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_preference_new') }}" class="btn btn-primary">{% trans %}Create new{% endtrans %}</a>
+{% endblock %}

@@ -1,0 +1,36 @@
+<div class="col-md-4">
+{{ form_start(form) }}
+    {{ form_row(form.gender) }}
+    {{ form_row(form.generation) }}
+    {{ form_row(form.preference) }}
+    {{ form_row(form.category) }}
+
+<div id="selectCountry" style="display:none">
+    {{ form_row(form.country) }}
+    </div>
+    
+    <button class="btn btn-primary" type="submit" name="actionName" value="export">{{ button_label|default('Search')|trans }}</button>
+    <button class="btn btn-primary" type="submit" name="actionName" value="person">{{ 'Найти персоны'|trans }}</button>
+{{ form_end(form) }}
+</div>
+
+<script>
+    for(var i = 0;i < document.getElementById("match_custom_category").length;i++){
+            console.log(document.getElementById("match_custom_category").options[i].value);
+    }
+    console.log(document.getElementById("match_custom_category").selectedIndex);
+
+
+
+
+const selectElement = document.getElementById('match_custom_category');
+
+selectElement.addEventListener('change', (event) => {
+    if (event.target.value == 'CATEGORY_PRESIDENT' || event.target.value == 'CATEGORY_PM' ) {
+        document.getElementById("selectCountry").style.display = "block";
+        console.log('yaych');
+    } else {
+        document.getElementById("selectCountry").style.display = "none";
+    }
+});
+</script>

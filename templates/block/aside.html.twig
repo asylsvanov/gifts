@@ -1,0 +1,151 @@
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+
+	<ul class="sidebar-nav" id="sidebar-nav">
+
+		<li class="nav-heading">{% trans %}Main{% endtrans %}</li>
+
+
+		<li class="nav-item">
+			<a class="nav-link collapsed" href="/admin/gift/">
+				<i class="bi bi-gift"></i>
+				<span>{% trans %}Souvenirs{% endtrans %}</span>
+			</a>
+		</li>
+
+
+		<!-- End Profile Page Nav -->
+		{% if is_granted('ROLE_ADMIN') %}
+			<li class="nav-item">
+				<a class="nav-link collapsed" href="/admin/person/">
+					<i class="bi bi-file-earmark-person"></i>
+					<span>{% trans %}Persons{% endtrans %}</span>
+				</a>
+			</li>
+
+
+			<li class="nav-item">
+				<a class="nav-link collapsed" href="/admin/preference/">
+					<i class="bi bi-hash"></i>
+					<span>{% trans %}Preferences{% endtrans %}</span>
+				</a>
+			</li>
+
+			<li class="nav-heading">
+				{% trans %}Поиск{% endtrans %}
+			</li>
+
+			<li class="nav-item">
+				<a class="nav-link collapsed" href="{{ path('app_export_new') }}">
+					<i class="bi bi-bookmark-heart"></i>
+					<span>{% trans %}Поиск по предпочтениям{% endtrans %}</span>
+				</a>
+			</li>
+
+			<li class="nav-item">
+				<a class="nav-link collapsed" href="{{ path('app_export_personal') }}">
+					<i class="bi bi-file-earmark-person"></i>
+					<span>{% trans %}Поиск по персоне{% endtrans %}</span>
+				</a>
+			</li>
+
+			{# <li class="nav-item">
+				<a class="nav-link collapsed" href="{{ path('app_export_match_custom2') }}">
+					<i class="bi bi-bookmark-heart"></i>
+					<span>{% trans %}Export by preferences{% endtrans %}</span>
+				</a>
+			</li> #}
+
+			{# <li class="nav-item">
+				<a class="nav-link collapsed" href="{{ path('app_export_new') }}">
+					<i class="bi bi-bookmark-heart"></i>
+					<span>{% trans %}Экспорт новый{% endtrans %}</span>
+				</a>
+			</li> #}
+
+			<li class="nav-heading">
+				{% trans %}Архив{% endtrans %}
+			</li>
+
+			<li class="nav-item">
+				<a class="nav-link collapsed" href="/admin/flow/">
+					<i class="bi bi-journal-check"></i>
+					<span>{% trans %}Архив подаренных/полученных{% endtrans %}</span>
+				</a>
+			</li>
+
+			<li class="nav-item">
+				<a class="nav-link collapsed" href="/admin/flow/new">
+					<i class="bi bi-arrow-left-right"></i>
+					<span>{% trans %}Получить/Подарить
+						{% endtrans %}</span>
+				</a>
+			</li>
+
+			
+
+			{# <li class="nav-item">
+				<a class="nav-link collapsed" href="/admin/gift/archive">
+					<i class="bi bi-gift"></i>
+					<span>{% trans %}Архив сувениров{% endtrans %}</span>
+				</a>
+			</li> #}
+
+
+			<!-- End F.A.Q Page Nav -->
+
+
+		<!-- End Contact Page Nav -->
+
+			{# <li class="nav-item">
+						<a class="nav-link collapsed" href="/admin/attachment/">
+							<i class="bi bi-file-richtext"></i>
+							<span>Attachments</span>
+						</a>
+					</li> #}
+			<!-- End Error 404 Page Nav -->
+
+			{# <li class="nav-item">
+						<a class="nav-link collapsed" href="/admin/photo/">
+							<i class="bi bi-file-image"></i>
+							<span>Photos</span>
+						</a>
+					</li> #}
+			<!-- End Blank Page Nav -->
+
+
+			{# <li class="nav-item">
+						<a class="nav-link collapsed" href="/admin/export/country">
+							<i class="bi bi-globe"></i>
+							<span>{% trans %}Search by country and category{% endtrans %}</span>
+						</a>
+					</li> #}
+
+
+			<!-- End Blank Page Nav -->
+			<li class="nav-heading">
+			&nbsp;</li>
+
+{#			<li class="nav-item">
+			<a class="nav-link collapsed text-danger btn-outline-danger" href="#">
+				<i class="bi bi-fire btn-outline-danger text-danger"></i>
+				<span>{% trans %}Безвозвратно <br>стереть все данные{% endtrans %}</span>
+			</a>
+		</li> #}
+		{% endif %}
+
+		<li class="nav-heading">
+			&nbsp;</li>
+
+		<li class="nav-item">
+			<a class="nav-link collapsed" href="/logout">
+				<i class="bi bi-box-arrow-in-left"></i>
+				<span>{% trans %}Logout{% endtrans %}</span>
+			</a>
+		</li>
+		<!-- End Login Page Nav -->
+
+	</ul>
+
+</aside>
+<!-- End Sidebar-->

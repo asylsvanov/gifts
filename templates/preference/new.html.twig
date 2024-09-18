@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}New Preference{% endtrans %}{% endblock %}
+{% block pagetitle %}{% trans %}Create new Preference{% endtrans %}{% endblock pagetitle %}
+
+{% block body %}
+
+    {{ include('preference/_form.html.twig') }}
+
+    <a href="{{ path('app_preference_index') }}" class="btn btn-secondary mt-3">{% trans %}back to list{% endtrans %}</a>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Attachment{% endblock %}
+
+{% block body %}
+    <h1>Attachment</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>{% trans %}Id{% endtrans %}</th>
+                <td>{{ attachment.id }}</td>
+            </tr>
+            <tr>
+                <th>ImageName</th>
+                <td>{{ attachment.imageName }}</td>
+            </tr>
+            <tr>
+                <th>ImageSize</th>
+                <td>{{ attachment.imageSize }}</td>
+            </tr>
+            <tr>
+                <th>Path</th>
+                <td>{{ attachment.path }}</td>
+            </tr>
+            <tr>
+                <th>Mimetype</th>
+                <td>{{ attachment.mimetype }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}CreatedBy{% endtrans %}</th>
+                <td>{{ attachment.createdBy }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}UpdatedBy{% endtrans %}</th>
+                <td>{{ attachment.updatedBy }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}CreatedAt{% endtrans %}</th>
+                <td>{{ attachment.createdAt ? attachment.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}UpdatedAt{% endtrans %}</th>
+                <td>{{ attachment.updatedAt ? attachment.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}DeletedAt{% endtrans %}</th>
+                <td>{{ attachment.deletedAt ? attachment.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_attachment_index') }}">{% trans %}back to list{% endtrans %}</a>
+
+    <a href="{{ path('app_attachment_edit', {'id': attachment.id}) }}">{% trans %}edit{% endtrans %}</a>
+
+    {{ include('attachment/_delete_form.html.twig') }}
+{% endblock %}

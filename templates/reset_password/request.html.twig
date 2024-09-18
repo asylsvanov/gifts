@@ -1,0 +1,22 @@
+{% extends 'pages/login.html.twig' %}
+
+{% block title %}{% trans %}Reset your password{% endtrans %}{% endblock %}
+{% block pagetitle %}{% trans %}Reset your password{% endtrans %}{% endblock pagetitle %}
+
+{% block body %}
+    {% for flash_error in app.flashes('reset_password_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+
+    {{ form_start(requestForm) }}
+        {{ form_row(requestForm.email) }}
+        <div class="mb-4">
+            <small>
+                {% trans %}Enter your email address and we will send you a
+                link to reset your password.{% endtrans %}
+            </small>
+        </div>
+
+        <button class="btn btn-primary">{% trans %}Send password reset email{% endtrans %}</button>
+    {{ form_end(requestForm) }}
+{% endblock %}

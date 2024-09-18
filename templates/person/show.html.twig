@@ -1,0 +1,201 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{% trans %}Person{% endtrans %}
+{% endblock %}
+{% block pagetitle %}
+	{% trans %}Person{% endtrans %}
+{% endblock pagetitle %}
+
+{% block body %}
+
+	<table class="table">
+		<tbody>
+			<tr>
+				<th></th>
+				<td>
+					{% if person.attachments|first %}
+						<img src="{{ asset('/attachments/'~person.attachments|first.imageName) }}" style="max-width: 150px" alt="{{ person.firstName }} {{ person.lastName }} {{ person.surname }}">
+					{% endif %}
+
+				</td>
+			</tr>
+			<tr>
+				<th>{% trans %}Фио{% endtrans %}</th>
+				<td>{{ person.prefix }}
+					{{ person.lastName }}
+					{{ person.firstName }}
+					{{ person.surname }}</td>
+			</tr>
+
+			<tr>
+				<th>{% trans %}Country{% endtrans %}</th>
+				<td>{{ person.country|trans }}</td>
+			</tr>
+			<tr>
+				<th>{% trans %}Category{% endtrans %}</th>
+				<td>
+					{% if person.category %}
+						{% for category in person.category %}
+							{{category|trans}}
+							{% if loop.last == false %},
+							{% endif %}
+						{% endfor %}
+					{% endif %}
+				</td>
+			</tr>
+			<tr>
+				<th>{% trans %}Sex{% endtrans %}</th>
+				<td>{{ person.sex == 1 ? "мужской" : "женский" }}</td>
+			</tr>
+			<tr>
+				<th>{% trans %}Age{% endtrans %}</th>
+				<td>{{ person.age }}</td>
+			</tr>
+			<tr>
+				<th>{% trans %}BirthAt{% endtrans %}</th>
+				<td>{{ person.birthAt ? person.birthAt|date('d.m.Y') : '' }}</td>
+			</tr>
+			<tr>
+				<th>{% trans %}Language{% endtrans %}</th>
+				<td>
+					{% if person.language %}
+						{% for language in person.language %}
+							{{language|trans}}
+							{% if loop.last == false %},
+							{% endif %}
+						{% endfor %}
+					{% endif %}
+				</td>
+			</tr>
+			<tr>
+				<th>{% trans %}Summary{% endtrans %}</th>
+				<td>{{ person.summary|raw }}</td>
+			</tr>
+			<tr>
+				<th>{% trans %}SocialProfiles{% endtrans %}</th>
+				<td>{{ person.socialProfiles ? person.socialProfiles|join(', ') : '' }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	{% if gived is not empty %}
+
+    <h2>Подареные</h2>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>{% trans %}PersonFrom{% endtrans %}</th>
+					<th>{% trans %}Gift{% endtrans %}</th>
+					<th>{% trans %}PersonTo{% endtrans %}</th>
+					<th>{% trans %}ReceivedAt{% endtrans %}</th>
+					<th>{% trans %}Description{% endtrans %}</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for flow in gived %}
+
+					<tr>
+						<td>
+							{% if flow.personFrom != null %}
+								<a href="{{ path('app_person_show', {'id': flow.personFrom.id}) }}" class="">{{ flow.personFrom }}</a>
+							{% else %}
+								{{ flow.importPersonFromCountry }}
+							{% endif %}
+						</td>
+						<td>
+							<a href="{{ path('app_gift_show', {'id': flow.gift.id}) }}" class="">{{ flow.gift }}</a>
+						</td>
+
+						<td>
+							{% if flow.personTo != null %}
+								<a href="{{ path('app_person_show', {'id': flow.personTo.id}) }}" class="">{{ flow.personTo }}</a>
+							{% else %}
+								{{ flow.importPersonTo }},
+								{{ flow.importPersonToCountry }},
+								{{flow.importPersonToCategory|trans}}
+							{% endif %}
+						</td>
+
+						<td>{{ flow.receivedAt ? flow.receivedAt|date('d.m.Y') : '' }}</td>
+						<td>{{ flow.description }}</td>
+						<td>
+							<a href="{{ path('app_flow_show', {'id': flow.id}) }}" class="btn btn-secondary mb-2">{% trans %}show{% endtrans %}</a>
+							<a href="{{ path('app_flow_edit', {'id': flow.id}) }}" class="btn btn-secondary mb-2">{% trans %}edit{% endtrans %}</a>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="7">{% trans %}no records found{% endtrans %}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+
+    {% if received is not empty %}
+
+    <h2>Полученые</h2>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>{% trans %}PersonFrom{% endtrans %}</th>
+					<th>{% trans %}Gift{% endtrans %}</th>
+					<th>{% trans %}PersonTo{% endtrans %}</th>
+					<th>{% trans %}ReceivedAt{% endtrans %}</th>
+					<th>{% trans %}Description{% endtrans %}</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for flow in received %}
+
+					<tr>
+						<td>
+							{% if flow.personFrom != null %}
+								<a href="{{ path('app_person_show', {'id': flow.personFrom.id}) }}" class="">{{ flow.personFrom }}</a>
+							{% else %}
+								{{ flow.importPersonFromCountry }}
+							{% endif %}
+						</td>
+						<td>
+							<a href="{{ path('app_gift_show', {'id': flow.gift.id}) }}" class="">{{ flow.gift }}</a>
+						</td>
+
+						<td>
+							{% if flow.personTo != null %}
+								<a href="{{ path('app_person_show', {'id': flow.personTo.id}) }}" class="">{{ flow.personTo }}</a>
+							{% else %}
+								{{ flow.importPersonTo }},
+								{{ flow.importPersonToCountry }},
+								{{flow.importPersonToCategory|trans}}
+							{% endif %}
+						</td>
+
+						<td>{{ flow.receivedAt ? flow.receivedAt|date('d.m.Y') : '' }}</td>
+						<td>{{ flow.description }}</td>
+						<td>
+							<a href="{{ path('app_flow_show', {'id': flow.id}) }}" class="btn btn-secondary mb-2">{% trans %}show{% endtrans %}</a>
+							<a href="{{ path('app_flow_edit', {'id': flow.id}) }}" class="btn btn-secondary mb-2">{% trans %}edit{% endtrans %}</a>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="7">{% trans %}no records found{% endtrans %}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+
+
+	<a href="{{ path('app_person_index') }}" class="btn btn-secondary mb-3 mt-3">{% trans %}back to list{% endtrans %}</a>
+
+	<a href="{{ path('app_person_edit', {'id': person.id}) }}" class="btn btn-secondary mb-3 mt-3">{% trans %}edit{% endtrans %}</a>
+	
+	<a href="{{ path('app_export_match_person_by_id', {'id': person.id}) }}" class="btn btn-secondary mb-1">{% trans %}export{% endtrans %}</a>
+
+	{{ include('person/_delete_form.html.twig') }}
+{% endblock %}

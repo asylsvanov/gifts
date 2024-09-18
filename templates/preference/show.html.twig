@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}Preference{% endtrans %}{% endblock %}
+{% block pagetitle %}{% trans %}Preference{% endtrans %}{% endblock pagetitle %}
+
+{% block body %}
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>{% trans %}Title{% endtrans %}</th>
+                <td>{{ preference.title }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}Summary{% endtrans %}</th>
+                <td>{{ preference.summary }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_preference_index') }}" class="btn btn-secondary">{% trans %}back to list{% endtrans %}</a>
+
+    <a href="{{ path('app_preference_edit', {'id': preference.id}) }}" class="btn btn-secondary">{% trans %}edit{% endtrans %}</a>
+
+    {{ include('preference/_delete_form.html.twig') }}
+{% endblock %}

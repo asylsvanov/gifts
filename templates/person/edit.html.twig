@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}Edit Person{% endtrans %}{% endblock %}
+{% block pagetitle %}{% trans %}Edit Person{% endtrans %}{% endblock pagetitle %}
+
+{% block body %}
+    {{ include('person/_form.html.twig', {'button_label': 'Update'}) }}
+<div class="p-3">
+    <a href="{{ path('app_person_index') }}" class="btn btn-secondary mb-3">{% trans %}back to list{% endtrans %}</a>
+
+    {{ include('person/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Attachment index{% endblock %}
+
+{% block body %}
+    <h1>Attachment index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans %}Id{% endtrans %}</th>
+                <th>ImageName</th>
+                <th>ImageSize</th>
+                <th>Path</th>
+                <th>Mimetype</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for attachment in attachments %}
+            <tr>
+                <td>{{ attachment.id }}</td>
+                <td>{{ attachment.imageName }}</td>
+                <td>{{ attachment.imageSize }}</td>
+                <td>{{ attachment.path }}</td>
+                <td>{{ attachment.mimetype }}</td>
+                <td>
+                    <a href="{{ path('app_attachment_show', {'id': attachment.id}) }}">{% trans %}show{% endtrans %}</a>
+                    <a href="{{ path('app_attachment_edit', {'id': attachment.id}) }}">{% trans %}edit{% endtrans %}</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="11">{% trans %}no records found{% endtrans %}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_attachment_new') }}">{% trans %}Create new{% endtrans %}</a>
+{% endblock %}

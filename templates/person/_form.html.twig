@@ -1,0 +1,100 @@
+
+{{ form_start(form) }}
+{{ form_errors(form) }}
+
+<div class="row">
+<div class="col-md-4">
+<div class="p-3">
+<h5>Информация</h5>
+{{ form_row(form.firstName) }}
+{{ form_row(form.lastName) }}
+{{ form_row(form.surname) }}
+{{ form_row(form.prefix) }}
+{{ form_row(form.sex) }}
+{{ form_row(form.birthAt) }}
+{{ form_row(form.country) }}
+{{ form_row(form.language) }}
+{{ form_row(form.summary) }}
+
+{# Start attachments #}
+<label class="form-label required" for="person_language-ts-control" data-live-ignore="" id="person_language-ts-label">Соцсети</label>
+<div class="socialProfiles mb-3"
+    data-index="{{ form.socialProfiles|length > 0 ? form.socialProfiles|last.vars.name + 1 : 0 }}"
+    data-prototype="{{ form_widget(form.socialProfiles.vars.prototype)|e('html_attr') }}"
+>
+{% for attachment in form.socialProfiles %}
+            <div>{{ form_row(attachment) }}</div>
+{% endfor %}
+</div>
+
+<button type="button" class="btn btn-secondary add_item_link" data-collection-holder-class="socialProfiles">{% trans %}Add link{% endtrans %}</button>
+{# End attachments #}
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="p-3">
+  <h5>Данные для системы подбора</h5>
+
+{{ form_row(form.category) }}
+{{ form_row(form.preferences) }}
+{{ form_row(form.age) }}
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="p-3">
+{# Start attachments #}
+{{ form_label(form.attachments) }}
+<div class="attachments mb-3"
+    data-index="{{ form.attachments|length > 0 ? form.attachments|last.vars.name + 1 : 0 }}"
+    data-prototype="{{ form_widget(form.attachments.vars.prototype)|e('html_attr') }}"
+>
+{% for attachment in form.attachments %}
+            <div>{{ form_row(attachment) }}</div>
+{% endfor %}
+</div>
+<button type="button" class="btn btn-secondary add_item_link" data-collection-holder-class="attachments">{% trans %}Attach file{% endtrans %}</button>
+{# End attachments #}
+
+
+</div>
+</div>
+</div>
+{{ form_rest(form) }}
+
+
+<div class="p-3">  
+<button class="btn btn-primary">{{ button_label|default('Save')|trans }}</button>
+</div>
+
+{{ form_end(form) }}
+
+
+
+
+
+<script>
+const addFormToCollection = (e) => {
+  const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+
+  const item = document.createElement('div');
+  item.classList.add('mb-3');
+  item.innerHTML = collectionHolder
+    .dataset
+    .prototype
+    .replace(
+      /__name__/g,
+      collectionHolder.dataset.index
+    );
+
+  collectionHolder.appendChild(item);
+
+  collectionHolder.dataset.index++;
+};
+
+document.querySelectorAll('.add_item_link').forEach(btn => {
+      btn.addEventListener("click", addFormToCollection)
+});
+
+  </script>

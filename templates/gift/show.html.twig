@@ -1,0 +1,128 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}Gift{% endtrans %}{% endblock %}
+{% block pagetitle %}{% trans %}Gift{% endtrans %}{% endblock pagetitle %}
+
+{% block body %}
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>{% trans %}Фото{% endtrans %}</th>
+                <td>{% if gift.photos|first %}
+							<img src="{{ asset('/photos/'~gift.photos|first.imageName) }}" style="max-width: 150px" alt="{{ gift.title }}">
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>{% trans %}Title{% endtrans %}</th>
+                <td>{{ gift.title }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}Size{% endtrans %}</th>
+                <td>{{ gift.size }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}Material{% endtrans %}</th>
+                <td>{{ gift.material }}</td>
+            </tr>
+            
+            {# <tr>
+                <th>{% trans %}Price{% endtrans %}</th>
+                <td>{{ gift.price }}</td>
+            </tr> #}
+            
+            <tr>
+                <th>{% trans %}OriginCountry{% endtrans %}</th>
+                <td>{{ gift.originCountry|trans }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}Summary{% endtrans %}</th>
+                <td>{{ gift.summary }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}Counter{% endtrans %}</th>
+                <td>{{ gift.counter }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}Гендерный признак{% endtrans %}</th>
+                <td>{% if gift.gender != '' %}
+                        {{ gift.gender|trans }}
+                    {% else %}
+                        Не имеет значения
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>{% trans %}Предпочтения{% endtrans %}</th>
+                <td>{{ gift.preferences|join(', ') }}</td>
+            </tr>
+
+            <tr>
+                <th>{% trans %}Для категории{% endtrans %}</th>
+                <td>{{ gift.category|trans }}</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    {% if flows is not empty %}
+
+    <h2>Архив по сувениру</h2>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>{% trans %}PersonFrom{% endtrans %}</th>
+					<th>{% trans %}Gift{% endtrans %}</th>
+					<th>{% trans %}PersonTo{% endtrans %}</th>
+					<th>{% trans %}ReceivedAt{% endtrans %}</th>
+					<th>{% trans %}Description{% endtrans %}</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for flow in flows %}
+
+					<tr>
+						<td>
+							{% if flow.personFrom != null %}
+								<a href="{{ path('app_person_show', {'id': flow.personFrom.id}) }}" class="">{{ flow.personFrom }}</a>
+							{% else %}
+								{{ flow.importPersonFromCountry }}
+							{% endif %}
+						</td>
+
+						<td>
+							{% if flow.personTo != null %}
+								<a href="{{ path('app_person_show', {'id': flow.personTo.id}) }}" class="">{{ flow.personTo }}</a>
+							{% else %}
+								{{ flow.importPersonTo }},
+								{{ flow.importPersonToCountry }},
+								{{flow.importPersonToCategory|trans}}
+							{% endif %}
+						</td>
+
+						<td>{{ flow.receivedAt ? flow.receivedAt|date('d.m.Y') : '' }}</td>
+						<td>{{ flow.description }}</td>
+						<td>
+							<a href="{{ path('app_flow_show', {'id': flow.id}) }}" class="btn btn-secondary mb-2">{% trans %}show{% endtrans %}</a>
+							<a href="{{ path('app_flow_edit', {'id': flow.id}) }}" class="btn btn-secondary mb-2">{% trans %}edit{% endtrans %}</a>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="7">{% trans %}no records found{% endtrans %}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+
+
+    <a href="{{ path('app_gift_index') }}" class="btn btn-secondary mb-3 mt-3">{% trans %}back to list{% endtrans %}</a>
+
+    <a href="{{ path('app_gift_edit', {'id': gift.id}) }}" class="btn btn-secondary mb-3 mt-3">{% trans %}edit{% endtrans %}</a>
+
+    {{ include('gift/_delete_form.html.twig') }}
+{% endblock %}

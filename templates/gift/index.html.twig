@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{% trans %}Gift index{% endtrans %}
+{% endblock %}
+{% block pagetitle %}
+	{% trans %}Gift index{% endtrans %}  <a href="{{ path('app_gift_new') }}" class="btn btn-primary mb-3 mt-3">{% trans %}Добавить{% endtrans %}</a>
+{% endblock pagetitle %}
+
+{% block body %}
+	{{ form_start(form) }}
+	<div class="mb-4" id="myfilter" style="display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    column-gap: 10px;">
+	
+        {{ form_row(form.gender) }}
+        {{ form_row(form.preference) }}
+        {{ form_row(form.category) }}
+        {{ form_row(form.generation) }}
+        <div class="mb-3">
+		<button class="btn btn-primary" type="submit" name="actionName" value="filter" >Фильтровать</button>
+		</div>
+		<div class="mb-3">
+		<button class="btn btn-primary" type="submit" name="actionName" value="export" >Экспортировать </button>
+		</div>
+	</div>
+
+    {{ form_end(form) }}
+
+	<div style="display:grid;grid-template-columns: repeat(4, minmax(0, 1fr));gap: 1rem;">
+
+		{% for gift in gifts %}
+
+			<div class="" style="text-align: center;">
+				{% if gift.photos|first is not empty %}
+					{% if gift.photos|first and gift.photos|first.imageName is not empty %}
+						<a href="{{ path('app_gift_show', {'id': gift.id}) }}">
+							<img src="{{ asset('/photos/'~gift.photos|first.imageName) }}" style="height:150px;margin: 0 auto;display: block;" alt="{{ gift.title }}">
+						</a>
+					{% endif %}
+				{% endif %}
+
+				<strong>
+					<a href="{{ path('app_gift_show', {'id': gift.id}) }}">{{ gift.title }}</a>
+				</strong>
+				<br>
+				{% if gift.counter < 1 %}
+				<span class="badge bg-danger">нет в наличии</span>
+				{% else %}
+					в наличии: {{gift.counter}}
+				{% endif %}
+				<br>
+				<a href="{{ path('app_gift_edit', {'id': gift.id}) }}" class="btn btn-link mb-1 btn-sm  btn-sm">{% trans %}edit{% endtrans %}</a>
+
+
+			</div>
+
+		{% else %}
+			{% trans %}no records found{% endtrans %}
+		{% endfor %}
+
+	</div>
+
+	<style>
+#gift_filter_preference-ts-control {
+    min-width: 174px;
+}
+	</style>
+
+{% endblock %}

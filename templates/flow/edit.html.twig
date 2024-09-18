@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}Give or Receive gift{% endtrans %}{% endblock %}
+{% block pagetitle %}{% trans %}Give or Receive gift{% endtrans %}{% endblock %}
+
+{% block body %}
+
+    {{ include('flow/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_flow_index') }}" class="btn btn-secondary mb-2">{% trans %}back to list{% endtrans %}</a>
+
+    {{ include('flow/_delete_form.html.twig') }}
+{% endblock %}

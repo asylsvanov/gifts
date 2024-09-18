@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}New Person{% endtrans %}{% endblock %}
+{% block pagetitle %}{% trans %}Create new Person{% endtrans %}{% endblock pagetitle %}
+
+{% block body %}
+<div class="p-3">
+
+ {{ include('person/_form.html.twig') }}
+
+    <a href="{{ path('app_person_index') }}" class="btn btn-secondary mb-3">{% trans %}back to list{% endtrans %}</a>
+    
+    </div>
+   
+{% endblock %}

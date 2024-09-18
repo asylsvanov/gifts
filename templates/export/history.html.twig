@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+{% block title %}{% trans %}Архив подаренных/полученных{% endtrans %}{% endblock title %}
+{% block pagetitle %}{% trans %}Архив подаренных/полученных{% endtrans %}{% endblock pagetitle %}
+
+{% block body %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>{% trans %}Даритель (Кто?){% endtrans %}</th>
+            <th>{% trans %}Получатель (Кому?){% endtrans %}</th>
+            <th>{% trans %}Сувенир (Что?){% endtrans %}</th>
+            <th>{% trans %}Дата (Когда?){% endtrans %}</th>
+            <th>{% trans %}Заметка (Детали?){% endtrans %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <a href="#">
+                Токаев К.К. <i class="bi bi-box-arrow-right"></i>
+                </a>
+            </td>
+            <td>
+                <a href="#">
+                Путин В.В. <i class="bi bi-box-arrow-in-right"></i>
+                </a>
+
+            </td>
+            <td>
+                <a href="#">
+                Картина  <i class="bi bi-gift"></i>
+                </a>
+
+            </td>
+            <td>18.05.2021</td>
+            <td>Экономический форум</td>
+        </tr>
+    </tbody>
+</table>
+
+{% endblock %}
