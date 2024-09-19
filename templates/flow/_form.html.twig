@@ -1,27 +1,89 @@
 <div class="col-md-4">
 {{ form_start(form) }}
+<div class="form-group">
     {{ form_row(form.personFrom) }}
+    <select id="personFromSelect" class="form-control">
+        <option value="">Select Person From</option>
+        {% for person in form.personFrom.vars.choices %}
+            <option value="{{ person.value }}">{{ person.label }}</option>
+        {% endfor %}
+        <option value="create_new">Create New Person (From)</option>
+    </select>
+    <div id="new_person_from_form" style="display: none;" class="mt-3">
+        {{ form_widget(form.newPersonFrom) }}
+    </div>
+</div>
 
-    {% if flow.importPersonFromCountry != '' and flow.personFrom == '' %} 
-        <div class="alert alert-warning" role="alert">
-            {{flow.importPersonFromCountry}}<br>
-            {% if flow.importPersonFrom != '' %}  {{flow.importPersonFrom}} {% endif %}
-        </div>
-    {% endif %}
-
+<div class="form-group">
     {{ form_row(form.personTo) }}
+    <select id="personToSelect" class="form-control">
+        <option value="">Select Person To</option>
+        {% for person in form.personTo.vars.choices %}
+            <option value="{{ person.value }}">{{ person.label }}</option>
+        {% endfor %}
+        <option value="create_new">Create New Person (To)</option>
+    </select>
+    <div id="new_person_to_form" style="display: none;" class="mt-3">
+        {{ form_widget(form.newPersonTo) }}
+    </div>
+</div>
 
-        {% if flow.importPersonToCountry != '' and flow.personTo == '' %} 
-        <div class="alert alert-warning" role="alert">
-            Заметка: {{flow.importPersonTo}}<br>
-            Страна: {{flow.importPersonToCountry|trans}}<br>
-            Категория: {{flow.importPersonToCategory|trans}}
-        </div>
-    {% endif %}
-
+<div class="form-group">
     {{ form_row(form.gift) }}
-    {{ form_row(form.receivedAt) }}
-    {{ form_row(form.description) }}
-    <button  class="btn btn-primary mb-2">{{ button_label|default('Give')|trans }}</button>
+    <select id="giftSelect" class="form-control">
+        <option value="">Select Gift</option>
+        {% for gift in form.gift.vars.choices %}
+            <option value="{{ gift.value }}">{{ gift.label }}</option>
+        {% endfor %}
+        <option value="create_new">Create New Gift</option>
+    </select>
+    <div id="new_gift_form" style="display: none;" class="mt-3">
+        {{ form_widget(form.newGift) }}
+    </div>
+</div>
+
+{{ form_row(form.receivedAt) }}
+{{ form_row(form.description) }}
+
 {{ form_end(form) }}
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const personFromSelect = document.getElementById('personFromSelect');
+        const newPersonFromForm = document.getElementById('new_person_from_form');
+
+        const personToSelect = document.getElementById('personToSelect');
+        const newPersonToForm = document.getElementById('new_person_to_form');
+
+        const giftSelect = document.getElementById('giftSelect');
+        const newGiftForm = document.getElementById('new_gift_form');
+
+        // Show/hide "New Person From" form
+        personFromSelect.addEventListener('change', function() {
+            if (this.value === 'create_new') {
+                newPersonFromForm.style.display = 'block';
+            } else {
+                newPersonFromForm.style.display = 'none';
+            }
+        });
+
+        // Show/hide "New Person To" form
+        personToSelect.addEventListener('change', function() {
+            if (this.value === 'create_new') {
+                newPersonToForm.style.display = 'block';
+            } else {
+                newPersonToForm.style.display = 'none';
+            }
+        });
+
+        // Show/hide "New Gift" form
+        giftSelect.addEventListener('change', function() {
+            if (this.value === 'create_new') {
+                newGiftForm.style.display = 'block';
+            } else {
+                newGiftForm.style.display = 'none';
+            }
+        });
+    });
+</script>

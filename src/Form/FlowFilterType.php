@@ -40,7 +40,6 @@ class FlowFilterType extends AbstractType
                 'autocomplete' => true,
                 'required' => false,
                 'label' => false,
-
             ])
             ->add('country', CountryType::class, [
                 'autocomplete' => true,

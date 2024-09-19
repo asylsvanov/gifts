@@ -100,15 +100,31 @@ class FlowController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $giftCounter = $flow->getGift()->getCounter();
-            if ($giftCounter > 0)
-                $flow->getGift()->setCounter($giftCounter - 1);
-
-            $flowRepository->save($flow, true);
-
+            // Check for new gift
+            $newGift = $form->get('newGift')->getData();
+            if ($newGift) {
+                $flow->setGift($newGift);
+                $entityManager->persist($newGift);
+            }
+    
+            // Check for new person (from)
+            $newPersonFrom = $form->get('newPersonFrom')->getData();
+            if ($newPersonFrom) {
+                $flow->setPersonFrom($newPersonFrom);
+                $entityManager->persist($newPersonFrom);
+            }
+    
+            // Check for new person (to)
+            $newPersonTo = $form->get('newPersonTo')->getData();
+            if ($newPersonTo) {
+                $flow->setPersonTo($newPersonTo);
+                $entityManager->persist($newPersonTo);
+            }
+    
+            $entityManager->flush();
             return $this->redirectToRoute('app_flow_index', [], Response::HTTP_SEE_OTHER);
         }
-
+    
         return $this->renderForm('flow/new.html.twig', [
             'flow' => $flow,
             'form' => $form,

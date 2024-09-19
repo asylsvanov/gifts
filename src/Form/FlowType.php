@@ -24,11 +24,21 @@ class FlowType extends AbstractType
                 'autocomplete' => true,
                 'required' => true
             ])
+            ->add('newPersonFrom', PersonType::class, [
+                'mapped' => false,
+                'required' => false,
+                'label' => 'Or create a new person from',
+            ])
             ->add('personTo', EntityType::class, [
                 'class' => Person::class,
                 'placeholder' => 'Choose an option',
                 'autocomplete' => true,
                 'required' => true
+            ])
+            ->add('newPersonTo', PersonType::class, [
+                'mapped' => false,
+                'required' => false,
+                'label' => 'Or create a new person to',
             ])
             ->add('gift', EntityType::class, [
                 'class' => Gift::class,
@@ -42,6 +52,11 @@ class FlowType extends AbstractType
                     ;
                 },
                 'required' => true
+            ])
+            ->add('newGift', GiftType::class, [
+                'mapped' => false,
+                'required' => false,
+                'label' => 'Or create a new gift',
             ])
             ->add('receivedAt', DateType::class, [
                 'years' => range(1990,date('Y'))
