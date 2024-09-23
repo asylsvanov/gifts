@@ -59,9 +59,14 @@ class FlowType extends AbstractType
                 'label' => 'Or create a new gift',
             ])
             ->add('receivedAt', DateType::class, [
+                'data' => new \DateTime(), 
                 'years' => range(1990,date('Y'))
             ])
             ->add('description', TextareaType::class)
+            // ->add('isReceived', CheckboxType::class, [
+            //     'label' => 'Полученный подарок',
+            //     'required' => false,
+            // ]);
         ;
     }
 

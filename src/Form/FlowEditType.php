@@ -47,6 +47,10 @@ class FlowEditType extends AbstractType
                 'years' => range(1990,date('Y'))
             ])
             ->add('description', TextareaType::class)
+            ->add('isReceived', CheckboxType::class, [
+                'label' => 'Is this a received gift?',
+                'required' => false,
+            ]);
         ;
     }
 

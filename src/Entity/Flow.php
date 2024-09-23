@@ -54,8 +54,8 @@ class Flow
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $importPersonToCategory = null;
 
-    // #[ORM\Column(nullable: true)]
-    // private ?bool $isReceived = null;
+    #[ORM\Column(type: 'boolean', nullable: true, options:['default' => false])]
+    private ?bool $isReceived = false;
 
     /**
      * Traits
@@ -129,17 +129,17 @@ class Flow
         return $this;
     }
 
-    // public function getIsReceived(): bool
-    // {
-    //     return $this->isSpecialGift;
-    // }
+    public function getIsReceived(): ?bool
+    {
+        return $this->isReceived;
+    }
 
-    // public function setIsReceived(bool $isSpecialGift): self
-    // {
-    //     $this->isSpecialGift = $isSpecialGift;
+    public function setIsReceived(?bool $isReceived): self
+    {
+        $this->isReceived = $isReceived;
 
-    //     return $this;
-    // }
+        return $this;
+    }
 
     #[Assert\IsTrue(
         message: 'Receiver and Giver must not be same person',

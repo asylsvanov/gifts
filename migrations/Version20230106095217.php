@@ -20,12 +20,12 @@ final class Version20230106095217 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE person CHANGE age age INT DEFAULT NULL');
+      //  $this->addSql('ALTER TABLE person CHANGE age age INT DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE person CHANGE age age INT NOT NULL');
+     //   $this->addSql('ALTER TABLE person CHANGE age age INT NOT NULL');
     }
 }

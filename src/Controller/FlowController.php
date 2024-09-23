@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Form\FlowEditType;
 
 use Symfony\Component\Form\FormError;
@@ -28,8 +29,8 @@ class FlowController extends AbstractController
         $this->translator = $translator;
     }
 
-    #[Route('/', name: 'app_flow_index', methods: ['GET'])]
-    public function index(FlowRepository $flowRepository, Request $request, GiftRepository $giftRepository): Response
+    #[Route('/received', name: 'app_flow_received', methods: ['GET'])]
+    public function received(FlowRepository $flowRepository, Request $request, GiftRepository $giftRepository): Response
     {
 
         $form = $this->createForm(FlowFilterType::class);
@@ -39,7 +40,10 @@ class FlowController extends AbstractController
 
             $data = $form->getData();
 
-            $qb = $flowRepository->createQueryBuilder('f');
+            $qb = $flowRepository->createQueryBuilder(alias: 'f')
+            ->where('f.isReceived = :isReceived')
+            ->setParameter('isReceived', true);
+
 
             if (!empty($data['personFrom'])) {
                 $qb->andWhere("f.personFrom = :from")
@@ -79,14 +83,86 @@ class FlowController extends AbstractController
 
         } 
         else {
-            $qb = $flowRepository->createQueryBuilder('f');
+            $qb = $flowRepository->createQueryBuilder('f')
+            ->where('f.isReceived = :isReceived')
+            ->setParameter('isReceived', true);
+
             $flows = $qb
             ->orderBy('f.receivedAt', 'DESC')
             ->getQuery()
             ->getResult();
         }
 
-        return $this->render('flow/index.html.twig', [
+        return $this->render('flow/received.html.twig', [
+            'flows' => $flows,
+            'form' => $form
+        ]);
+    }
+
+    #[Route('/presented', name: 'app_flow_presented', methods: ['GET'])]
+    public function presented(FlowRepository $flowRepository, Request $request, GiftRepository $giftRepository): Response
+    {
+
+        $form = $this->createForm(FlowFilterType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $data = $form->getData();
+
+            $qb = $flowRepository->createQueryBuilder(alias: 'f')
+            ->where('f.isReceived = :isReceived')
+            ->setParameter('isReceived', false);
+
+            if (!empty($data['personFrom'])) {
+                $qb->andWhere("f.personFrom = :from")
+                ->setParameter("from", $data['personFrom'])
+                ;
+            }
+
+            if (!empty($data['personTo'])) {
+                $qb->andWhere("f.personTo = :to")
+                ->setParameter("to", $data['personTo'])
+                ;
+            }
+
+            if (!empty($data['gift'])) {
+                $qb->andWhere("f.gift = :gift")
+                ->setParameter("gift", $data['gift'])
+                ;
+            }
+
+            if (!empty($data['country'])) {
+                $qb
+                ->join('f.personFrom', 't1', 'WITH', null, 't1.id')
+                ->join('f.personTo', 't2', 'WITH', null, 't2.id')
+                ->andWhere("t1.country = :country or t2.country = :country")
+                ->setParameter('country', $data['country'])
+            ;
+            }
+
+            $flows = $qb
+            ->orderBy('f.receivedAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+            if (!empty($flows) && $request->get('actionName') == 'export') {
+                return new BinaryFileResponse($this->getDocxFileFromTemplate('template_only_archive', $flows));
+            }
+
+        } 
+        else {
+            $qb = $flowRepository->createQueryBuilder('f')
+            ->where('f.isReceived = :isReceived')
+            ->setParameter('isReceived', false);
+
+            $flows = $qb
+            ->orderBy('f.receivedAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+        }
+
+        return $this->render('flow/presented.html.twig', [
             'flows' => $flows,
             'form' => $form
         ]);
@@ -100,32 +176,15 @@ class FlowController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Check for new gift
-            $newGift = $form->get('newGift')->getData();
-            if ($newGift) {
-                $flow->setGift($newGift);
-                $entityManager->persist($newGift);
-            }
-    
-            // Check for new person (from)
-            $newPersonFrom = $form->get('newPersonFrom')->getData();
-            if ($newPersonFrom) {
-                $flow->setPersonFrom($newPersonFrom);
-                $entityManager->persist($newPersonFrom);
-            }
-    
-            // Check for new person (to)
-            $newPersonTo = $form->get('newPersonTo')->getData();
-            if ($newPersonTo) {
-                $flow->setPersonTo($newPersonTo);
-                $entityManager->persist($newPersonTo);
-            }
-    
-            $entityManager->flush();
-            return $this->redirectToRoute('app_flow_index', [], Response::HTTP_SEE_OTHER);
+            $giftCounter = $flow->getGift()->getCounter();
+            if ($giftCounter > 0)
+                $flow->getGift()->setCounter($giftCounter - 1);
+            $flowRepository->save($flow, true);
+
+            return $this->redirectToRoute('app_flow_presented', [], Response::HTTP_SEE_OTHER);
         }
-    
-        return $this->renderForm('flow/new.html.twig', [
+
+        return $this->render('flow/new.html.twig', [
             'flow' => $flow,
             'form' => $form,
         ]);
@@ -148,10 +207,10 @@ class FlowController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $flowRepository->save($flow, true);
 
-            return $this->redirectToRoute('app_flow_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_flow_presented', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('flow/edit.html.twig', [
+        return $this->render('flow/edit.html.twig', [
             'flow' => $flow,
             'form' => $form,
         ]);
@@ -164,10 +223,10 @@ class FlowController extends AbstractController
             $flowRepository->remove($flow, true);
         }
 
-        return $this->redirectToRoute('app_flow_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_flow_presented', [], Response::HTTP_SEE_OTHER);
     }
 
-    private function getDocxFileFromTemplate($template = 'template_only_archive',$flow)
+    private function getDocxFileFromTemplate($flow, $template = 'template_only_archive')
     {
             $source = __DIR__ . "/../resources/".$template.".docx";
             $templateProcessor = new TemplateProcessor($source);
