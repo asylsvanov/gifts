@@ -157,7 +157,7 @@ class GiftController extends AbstractController
             return $this->redirectToRoute('app_gift_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('gift/new.html.twig', [
+        return $this->render('gift/new.html.twig', [
             'gift' => $gift,
             'form' => $form,
         ]);
@@ -187,7 +187,7 @@ class GiftController extends AbstractController
             return $this->redirectToRoute('app_gift_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('gift/edit.html.twig', [
+        return $this->render('gift/edit.html.twig', [
             'gift' => $gift,
             'form' => $form,
         ]);
@@ -204,7 +204,7 @@ class GiftController extends AbstractController
     }
 
     
-    private function getDocxFileFromTemplate($template = 'template', $variants, $received = null, $gived = null, $person = null)
+    private function getDocxFileFromTemplate($variants, $template = 'template', $received = null, $gived = null, $person = null)
     {
             $source = __DIR__ . "/../resources/".$template.".docx";
             $templateProcessor = new TemplateProcessor($source);

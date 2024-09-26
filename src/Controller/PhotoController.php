@@ -34,7 +34,7 @@ class PhotoController extends AbstractController
             return $this->redirectToRoute('app_photo_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('photo/new.html.twig', [
+        return $this->render('photo/new.html.twig', [
             'photo' => $photo,
             'form' => $form,
         ]);
@@ -60,7 +60,7 @@ class PhotoController extends AbstractController
             return $this->redirectToRoute('app_photo_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('photo/edit.html.twig', [
+        return $this->render('photo/edit.html.twig', [
             'photo' => $photo,
             'form' => $form,
         ]);

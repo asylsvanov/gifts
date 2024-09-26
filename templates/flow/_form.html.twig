@@ -10,7 +10,7 @@
             {{ form_widget(form.personFrom, {'attr': {'id': 'personFromSelect', 'class': 'form-control'}}) }}
         </div>
         <div class="col-4">
-            <button type="button" id="togglePersonFrom" class="btn btn-secondary form-control">Создать персону</button>
+            <button type="button" id="togglePersonFrom" class="btn btn-primary form-control">Создать</button>
         </div>
     </div>
     <div id="new_person_from_form" style="display: none;" class="mt-3">
@@ -26,7 +26,7 @@
             {{ form_widget(form.personTo, {'attr': {'id': 'personToSelect', 'class': 'form-control'}}) }}
         </div>
         <div class="col-4">
-            <button type="button" id="togglePersonTo" class="btn btn-secondary form-control">Создать персону</button>
+            <button type="button" id="togglePersonTo" class="btn btn-primary form-control">Создать</button>
         </div>
     </div>
     <div id="new_person_to_form" style="display: none;" class="mt-3">
@@ -42,18 +42,23 @@
             {{ form_widget(form.gift, {'attr': {'id': 'giftSelect', 'class': 'form-control'}}) }}
         </div>
         <div class="col-4">
-            <button type="button" id="toggleGift" class="btn btn-secondary form-control">Создать сувенир</button>
+            <button type="button" id="toggleGift" class="btn btn-primary form-control">Создать</button>
         </div>
     </div>
     <div id="new_gift_form" style="display: none;" class="mt-3">
         {{ form_widget(form.newGift) }}
+
+        <div class="form-group">
+            <label for="photos">Прикрепите фотографию</label>
+            <input type="file" id="photos" name="photos[]" multiple class="form-control">
+        </div>
     </div>
 
     {{ form_row(form.receivedAt) }}
     {{ form_row(form.description) }}
 
-    <button class="btn btn-primary mb-2">Добавить в полученные</button>
-    <button class="btn btn-success mb-2">Добавить в подаренные</button>
+    <button type="submit" name="received" value="true" class="btn btn-primary mb-2">Добавить в полученные</button>
+    <button type="submit" name="received" value="false" class="btn btn-success mb-2">Добавить в подаренные</button>
 
     {{ form_end(form) }}
 </div>
@@ -61,8 +66,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Person From toggle
-        const personFromSelect = document.getElementById('personFromSelect');
+        const personFromSelect = document.getElementById('flow_personFrom');
         const newPersonFromForm = document.getElementById('new_person_from_form');
         const togglePersonFrom = document.getElementById('togglePersonFrom');
 
@@ -70,16 +74,19 @@
             if (newPersonFromForm.style.display === 'none') {
                 newPersonFromForm.style.display = 'block';
                 personFromSelect.setAttribute('disabled', true); // Correctly set disabled attribute
-                togglePersonFrom.textContent = 'Select from list';
+                togglePersonFrom.classList.add("btn-secondary");
+                togglePersonFrom.classList.remove("btn-primary");
+                togglePersonFrom.textContent = 'Выбрать из списка';
             } else {
                 newPersonFromForm.style.display = 'none';
                 personFromSelect.removeAttribute('disabled'); // Correctly remove disabled attribute
-                togglePersonFrom.textContent = 'Create New Person (From)';
+                togglePersonFrom.classList.remove("btn-secondary");
+                togglePersonFrom.classList.add("btn-primary");
+                togglePersonFrom.textContent = 'Создать';
             }
         });
 
-        // Person To toggle
-        const personToSelect = document.getElementById('personToSelect');
+        const personToSelect = document.getElementById('flow_personTo');
         const newPersonToForm = document.getElementById('new_person_to_form');
         const togglePersonTo = document.getElementById('togglePersonTo');
 
@@ -87,29 +94,57 @@
             if (newPersonToForm.style.display === 'none') {
                 newPersonToForm.style.display = 'block';
                 personToSelect.setAttribute('disabled', true); // Correctly set disabled attribute
-                togglePersonTo.textContent = 'Select from list';
+                togglePersonTo.classList.add("btn-secondary");
+                togglePersonTo.classList.remove("btn-primary");
+                togglePersonTo.textContent = 'Выбрать из списка';
             } else {
                 newPersonToForm.style.display = 'none';
                 personToSelect.removeAttribute('disabled'); // Correctly remove disabled attribute
-                togglePersonTo.textContent = 'Create New Person (To)';
+                togglePersonTo.classList.remove("btn-secondary");
+                togglePersonTo.classList.add("btn-primary");
+                togglePersonTo.textContent = 'Создать';
             }
         });
 
-        // Gift toggle
-        const giftSelect = document.getElementById('giftSelect');
+        const giftSelect = document.getElementById('flow_gift');
         const newGiftForm = document.getElementById('new_gift_form');
+        const photosSection = document.getElementById('photos_section');
         const toggleGift = document.getElementById('toggleGift');
 
         toggleGift.addEventListener('click', function() {
             if (newGiftForm.style.display === 'none') {
                 newGiftForm.style.display = 'block';
+            //    photosSection.style.display = 'block'; 
                 giftSelect.setAttribute('disabled', true); // Correctly set disabled attribute
-                toggleGift.textContent = 'Select from list';
+                toggleGift.classList.add("btn-secondary");
+                toggleGift.classList.remove("btn-primary");
+                toggleGift.textContent = 'Выбрать из списка';
             } else {
                 newGiftForm.style.display = 'none';
                 giftSelect.removeAttribute('disabled'); // Correctly remove disabled attribute
-                toggleGift.textContent = 'Create New Gift';
+             //   photosSection.style.display = 'none';
+                toggleGift.classList.remove("btn-secondary");
+                toggleGift.classList.add("btn-primary");
+                toggleGift.textContent = 'Создать';
             }
         });
+
+        document.querySelectorAll('.add_item_link').forEach(btn => {
+            btn.addEventListener("click", addFormToCollection1);
+        });
     });
+
+  const addFormToCollection1 = (e) => {
+        const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+
+        const item = document.createElement('div');
+        item.classList.add('mb-3');
+        item.innerHTML = collectionHolder
+            .dataset
+            .prototype
+            .replace(/__name__/g, collectionHolder.dataset.index);
+
+        collectionHolder.appendChild(item);
+        collectionHolder.dataset.index++;
+    };
 </script>

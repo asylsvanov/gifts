@@ -34,23 +34,12 @@ class FlowEditType extends AbstractType
                 'class' => Gift::class,
                 'placeholder' => 'Choose an option',
                 'autocomplete' => true,
-                // 'query_builder' => function (GiftRepository $er) {
-                //     return $er->createQueryBuilder('g')
-                //         ->where('g.isAvailable = 1')
-                //         ->where('g.isActive = 1')
-                //         ->where('g.counter > 0')
-                //     ;
-                // },
                 'required' => true
             ])
             ->add('receivedAt', DateType::class, [
                 'years' => range(1990,date('Y'))
             ])
-            ->add('description', TextareaType::class)
-            ->add('isReceived', CheckboxType::class, [
-                'label' => 'Is this a received gift?',
-                'required' => false,
-            ]);
+            ->add('description', TextareaType::class);
         ;
     }
 

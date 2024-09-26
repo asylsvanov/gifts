@@ -22,23 +22,19 @@ class FlowType extends AbstractType
                 'class' => Person::class,
                 'placeholder' => 'Choose an option',
                 'autocomplete' => true,
-                'required' => true
+                'required' => false
             ])
             ->add('newPersonFrom', PersonType::class, [
-                'mapped' => false,
                 'required' => false,
-                'label' => 'Or create a new person from',
             ])
             ->add('personTo', EntityType::class, [
                 'class' => Person::class,
                 'placeholder' => 'Choose an option',
                 'autocomplete' => true,
-                'required' => true
+                'required' => false
             ])
             ->add('newPersonTo', PersonType::class, [
-                'mapped' => false,
                 'required' => false,
-                'label' => 'Or create a new person to',
             ])
             ->add('gift', EntityType::class, [
                 'class' => Gift::class,
@@ -51,23 +47,16 @@ class FlowType extends AbstractType
                         ->where('g.counter > 0')
                     ;
                 },
-                'required' => true
+                'required' => false
             ])
             ->add('newGift', GiftType::class, [
-                'mapped' => false,
                 'required' => false,
-                'label' => 'Or create a new gift',
             ])
             ->add('receivedAt', DateType::class, [
                 'data' => new \DateTime(), 
                 'years' => range(1990,date('Y'))
             ])
-            ->add('description', TextareaType::class)
-            // ->add('isReceived', CheckboxType::class, [
-            //     'label' => 'Полученный подарок',
-            //     'required' => false,
-            // ]);
-        ;
+            ->add('description', TextareaType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

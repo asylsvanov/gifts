@@ -1,0 +1,27 @@
+<div class="col-md-4">
+{{ form_start(form) }}
+    {{ form_row(form.personFrom) }}
+
+    {% if flow.importPersonFromCountry != '' and flow.personFrom == '' %} 
+        <div class="alert alert-warning" role="alert">
+            {{flow.importPersonFromCountry}}<br>
+            {% if flow.importPersonFrom != '' %}  {{flow.importPersonFrom}} {% endif %}
+        </div>
+    {% endif %}
+
+    {{ form_row(form.personTo) }}
+
+        {% if flow.importPersonToCountry != '' and flow.personTo == '' %} 
+        <div class="alert alert-warning" role="alert">
+            Заметка: {{flow.importPersonTo}}<br>
+            Страна: {{flow.importPersonToCountry|trans}}<br>
+            Категория: {{flow.importPersonToCategory|trans}}
+        </div>
+    {% endif %}
+
+    {{ form_row(form.gift) }}
+    {{ form_row(form.receivedAt) }}
+    {{ form_row(form.description) }}
+    <button  class="btn btn-primary mb-2">{{ button_label|default('Give')|trans }}</button>
+{{ form_end(form) }}
+</div>

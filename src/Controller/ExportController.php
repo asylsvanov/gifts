@@ -206,7 +206,7 @@ class ExportController extends AbstractController
     }
 
 
-    private function getDocxFileFromTemplate($template = 'template', $variants, $received = null, $gived = null, $person = null)
+    private function getDocxFileFromTemplate($variants, $template = 'template', $received = null, $gived = null, $person = null)
     {
             $source = __DIR__ . "/../resources/".$template.".docx";
             $templateProcessor = new TemplateProcessor($source);

@@ -7,6 +7,9 @@
 			{% block title %}
 			{% endblock %}
 		</title>
+{# 
+		<script src="/assets/js/jquery-3.7.1.min.js"></script> #}
+
 		<link
 		rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
 		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
@@ -29,7 +32,12 @@
 			<link href="/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
 			<link href="/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
 			<link href="/assets/vendor/simple-datatables/style.css" rel="stylesheet">
-
+			{# <link href="/assets/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+			<script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+			<script src="/assets/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+			<script>
+				$.fn.selectpicker.Constructor.BootstrapVersion = '5';
+			</script> #}
 			<!-- Template Main CSS File -->
 			<link href="/assets/css/style.css" rel="stylesheet">
 		{% endblock %}

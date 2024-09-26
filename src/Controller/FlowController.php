@@ -3,8 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Flow;
-use App\Form\FlowFilterType;
 use App\Form\FlowType;
+use App\Form\FlowFilterType;
+use App\Entity\Photo;
+use App\Entity\Gift;
+use App\Form\GiftType;
+use App\Repository\PersonRepository;
+use App\Entity\Person;
+use App\Form\PersonType;
 use App\Repository\FlowRepository;
 use App\Repository\GiftRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,7 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\FlowEditType;
-
 use Symfony\Component\Form\FormError;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -99,7 +104,7 @@ class FlowController extends AbstractController
         ]);
     }
 
-    #[Route('/presented', name: 'app_flow_presented', methods: ['GET'])]
+    #[Route('/presented', name: 'app_flow_presented', methods: ['GET'])]   
     public function presented(FlowRepository $flowRepository, Request $request, GiftRepository $giftRepository): Response
     {
 
@@ -169,19 +174,59 @@ class FlowController extends AbstractController
     }
 
     #[Route('/new', name: 'app_flow_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, FlowRepository $flowRepository): Response
+    public function new(Request $request, FlowRepository $flowRepository, PersonRepository $personRepository, GiftRepository $giftRepository): Response
     {
         $flow = new Flow();
         $form = $this->createForm(FlowType::class, $flow);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $giftCounter = $flow->getGift()->getCounter();
-            if ($giftCounter > 0)
-                $flow->getGift()->setCounter($giftCounter - 1);
-            $flowRepository->save($flow, true);
+        if ($form->isSubmitted()) {
+            if ($request->request->get('received') === 'true') {
+                $flow->setIsReceived(true);  
+            } else {
+                $flow->setIsReceived(false); 
+            }
 
-            return $this->redirectToRoute('app_flow_presented', [], Response::HTTP_SEE_OTHER);
+            if ($flow->getPersonFrom() == null) {
+                $newPerson1 = $flow->getNewPersonFrom();
+                $personRepository->save($newPerson1, true);
+                $flow->setPersonFrom($newPerson1);
+            }
+
+            if ($flow->getPersonTo() == null) {
+                $newPerson2 = $flow->getNewPersonTo();
+                $personRepository->save($newPerson2, true);
+                $flow->setPersonTo($newPerson2);
+            }
+
+            if ($flow->getGift() == null) {
+                $newGift = $flow->getNewGift();
+                $giftRepository->save($newGift, true);
+                $flow->setGift($newGift);
+            }
+
+            $photos = $request->files->get('photos');
+            if ($photos) {
+                foreach ($photos as $photo) {
+                    $photoEntity = new Photo();
+                    $photoEntity->setGift($newGift); 
+                    $photoEntity->setImageFile($photo); 
+                    $newGift->addPhoto($photoEntity);
+                }
+            }
+
+            if($flow->getPersonFrom() != null && $flow->getPersonTo() != null && $flow->getGift() != null){
+                $giftCounter = $flow->getGift()->getCounter();
+                if ($giftCounter > 0)
+                    $flow->getGift()->setCounter($giftCounter - 1);
+                $flowRepository->save($flow, true);
+
+                if ($flow->getIsReceived()) {
+                    return $this->redirectToRoute('app_flow_received', [], Response::HTTP_SEE_OTHER);
+                } else {
+                    return $this->redirectToRoute('app_flow_presented', [], Response::HTTP_SEE_OTHER);
+                }
+            }
         }
 
         return $this->render('flow/new.html.twig', [
@@ -207,7 +252,11 @@ class FlowController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $flowRepository->save($flow, true);
 
-            return $this->redirectToRoute('app_flow_presented', [], Response::HTTP_SEE_OTHER);
+            if ($flow->getIsReceived()) {
+                return $this->redirectToRoute('app_flow_received', [], Response::HTTP_SEE_OTHER);
+            } else {
+                return $this->redirectToRoute('app_flow_presented', [], Response::HTTP_SEE_OTHER);
+            }
         }
 
         return $this->render('flow/edit.html.twig', [

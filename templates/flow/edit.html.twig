@@ -5,9 +5,9 @@
 
 {% block body %}
 
-    {{ include('flow/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('flow/_form1.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('app_flow_received') }}" class="btn btn-secondary mb-2">{% trans %}back to list{% endtrans %}</a>
+    <a href="{{ path('app_flow_presented') }}" class="btn btn-secondary mb-2">{% trans %}back to list{% endtrans %}</a>
 
     {{ include('flow/_delete_form.html.twig') }}
 {% endblock %}

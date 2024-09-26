@@ -34,7 +34,7 @@ class AttachmentController extends AbstractController
             return $this->redirectToRoute('app_attachment_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('attachment/new.html.twig', [
+        return $this->render('attachment/new.html.twig', [
             'attachment' => $attachment,
             'form' => $form,
         ]);
@@ -60,7 +60,7 @@ class AttachmentController extends AbstractController
             return $this->redirectToRoute('app_attachment_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('attachment/edit.html.twig', [
+        return $this->render('attachment/edit.html.twig', [
             'attachment' => $attachment,
             'form' => $form,
         ]);

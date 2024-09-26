@@ -56,6 +56,45 @@ class Flow
 
     #[ORM\Column(type: 'boolean', nullable: true, options:['default' => false])]
     private ?bool $isReceived = false;
+    private ?Gift $newGift = null;
+    private ?Person $newPersonFrom = null;
+    private ?Person $newPersonTo = null;
+
+    public function getNewPersonFrom(): ?Person
+{
+    return $this->newPersonFrom;
+}
+
+public function setNewPersonFrom(?Person $newPersonFrom): self
+{
+    $this->newPersonFrom = $newPersonFrom;
+
+    return $this;
+}
+
+public function getNewPersonTo(): ?Person
+{
+    return $this->newPersonTo;
+}
+
+public function setNewPersonTo(?Person $newPersonTo): self
+{
+    $this->newPersonTo = $newPersonTo;
+
+    return $this;
+}
+
+public function getNewGift(): ?Gift
+{
+    return $this->newGift;
+}
+
+public function setNewGift(?Gift $newGift): self
+{
+    $this->newGift = $newGift;
+
+    return $this;
+}
 
     /**
      * Traits
